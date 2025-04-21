@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>{{ titulo }}</h1>
+            <a href="{% url 'criar_setor' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Novo Setor
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Sigla</th>
+                            <th>Nome</th>
+                            <th>Responsável</th>
+                            <th>Alocações</th>
+                            <th>Ativas</th>
+                            <th>Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for setor in setores %}
+                            <tr>
+                                <td>{{ setor.sigla }}</td>
+                                <td>{{ setor.nome }}</td>
+                                <td>{{ setor.responsavel }}</td>
+                                <td>{{ setor.total_alocacoes }}</td>
+                                <td>
+                                <span class="badge bg-{% if setor.alocacoes_ativas %}warning{% else %}success{% endif %}">
+                                    {{ setor.alocacoes_ativas }}
+                                </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'detalhar_setor' setor.id %}" class="btn btn-sm btn-info"
+                                       title="Detalhes">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'editar_setor' setor.id %}" class="btn btn-sm btn-warning"
+                                       title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'deletar_setor' setor.id %}" class="btn btn-sm btn-danger"
+                                       title="Excluir">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center">Nenhum setor cadastrado</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
