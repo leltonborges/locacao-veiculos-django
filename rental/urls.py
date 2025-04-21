@@ -3,6 +3,7 @@ from rental.views.core.views import home
 from rental.views.alocacoes.views import criar_alocacao, listar_alocacoes, detalhar_alocacao
 from rental.views.alocacoes.api import frota_disponivel_por_veiculo, km_frota
 from rental.views.frota.views import listar_frota, criar_frota, detalhar_frota, editar_frota, deletar_frota
+from rental.views.marcas.views import listar_marcas, criar_marca, detalhar_marca, editar_marca, deletar_marca
 from rental.views.veiculos.views import listar_veiculos, criar_veiculo, editar_veiculo, detalhar_veiculo
 
 urlpatterns = [
@@ -22,4 +23,9 @@ urlpatterns = [
     path('frota/<int:frota_id>/', detalhar_frota, name='detalhar_frota'),
     path('frota/<int:frota_id>/edit/', editar_frota, name='editar_frota'),
     path('frota/<int:frota_id>/delete/', deletar_frota, name='deletar_frota'),
+    path('marcas/', listar_marcas, name='listar_marcas'),
+    path('marcas/new/', criar_marca, name='criar_marca'),
+    path('marcas/<int:marca_id>/', detalhar_marca, name='detalhar_marca'),
+    path('marcas/<int:marca_id>/edit/', editar_marca, name='editar_marca'),
+    path('marcas/<int:marca_id>/delete/', deletar_marca, name='deletar_marca')
 ]

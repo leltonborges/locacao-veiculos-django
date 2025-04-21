@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>{{ titulo }}</h1>
+            <a href="{% url 'listar_marcas' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Cancelar
+            </a>
+        </div>
+
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">Confirmar Exclusão</h5>
+            </div>
+            <div class="card-body">
+                {% if marca.veiculos.count > 0 %}
+                    <div class="alert alert-warning">
+                        <strong>Atenção!</strong> Esta marca possui {{ marca.veiculos.count }} veículo(s) cadastrado(s)
+                        e não pode ser excluída.
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'detalhar_marca' marca.id %}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i> Voltar aos detalhes
+                        </a>
+                    </div>
+                {% else %}
+                    <p>Tem certeza que deseja excluir permanentemente a marca <strong>{{ marca.nome }}</strong>?</p>
+                    <p>Esta ação não pode ser desfeita.</p>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Confirmar Exclusão
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -70,7 +70,6 @@ class Veiculo(models.Model):
     def __str__(self):
         return f"{self.marca} {self.modelo}"
 
-
     @classmethod
     def com_frota_disponivel(cls):
         return cls.objects.annotate(
