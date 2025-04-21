@@ -1,5 +1,4 @@
 from datetime import date
-from django.utils import timezone
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django import forms
@@ -131,7 +130,7 @@ class AlocacaoAdmin(admin.ModelAdmin):
     )
     raw_id_fields = ('unidade_frota', 'cliente', 'setor')
     date_hierarchy = 'data_alocacao'
-    readonly_fields = ('km_percorridos', 'em_uso', 'data_alocacao')
+    readonly_fields = ('km_percorridos', 'em_uso')
 
     fieldsets = (
         (None, {
@@ -139,6 +138,7 @@ class AlocacaoAdmin(admin.ModelAdmin):
                 'unidade_frota',
                 'cliente',
                 'setor',
+                'data_alocacao',
                 'motivo'
             )
         }),
@@ -161,17 +161,10 @@ class AlocacaoAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = list(self.readonly_fields)
-        if obj:  # Se estiver editando
+        if obj:
             readonly_fields.append('km_inicial')
             readonly_fields.append('data_alocacao')
-        else:
-            readonly_fields = ['km_percorridos', 'em_uso']
         return readonly_fields
-
-    def save_model(self, request, obj, form, change):
-        if not change:  # If this is a new object
-            obj.data_alocacao = timezone.now()
-        super().save_model(request, obj, form, change)
 
 
 @admin.register(Frota)

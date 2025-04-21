@@ -1,5 +1,7 @@
 from django.db import models
 from django.db.models import Count, Q
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 
 class Marca(models.Model):
@@ -235,3 +237,12 @@ class Alocacao(models.Model):
         super().save(*args, **kwargs)
 
         self.unidade_frota.save()
+
+
+@receiver(post_delete, sender=Alocacao)
+def atualizar_disponibilidade_frota(sender, instance, **kwargs):
+    frota = instance.unidade_frota
+
+    if not frota.alocacoes.filter(data_devolucao__isnull=True).exists():
+        frota.disponivel = True
+        frota.save()

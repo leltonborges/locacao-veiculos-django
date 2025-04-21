@@ -22,9 +22,13 @@ def alocar_veiculo_detalhes(request, veiculo_id):
 
     if request.method == 'POST':
         form = AlocacaoForm(request.POST)
+        form.fields['unidade_frota'].queryset = unidades_disponiveis  # Important!
         if form.is_valid():
             alocacao = form.save(commit=False)
-            alocacao.unidade_frota = form.cleaned_data['unidade_frota']
+            if alocacao.unidade_frota.veiculo.id != veiculo_id:
+                messages.error(request, 'Unidade selecionada não pertence ao veículo escolhido')
+                return redirect('alocar_veiculo_detalhes', veiculo_id=veiculo_id)
+
             alocacao.save()
             messages.success(request, f'Veículo {alocacao.unidade_frota} alocado com sucesso!')
             return redirect('home')
