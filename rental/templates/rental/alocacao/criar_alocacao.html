@@ -17,10 +17,14 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="veiculo" class="form-label">Veículo *</label>
-                            <select name="veiculo" id="veiculo" class="form-select" required onchange="updateFrotaOptions()">
+                            <select name="veiculo" id="veiculo" class="form-select" required
+                                    onchange="updateFrotaOptions()">
                                 <option value="">Selecione um veículo</option>
                                 {% for veiculo in veiculos %}
-                                    <option value="{{ veiculo.id }}">{{ veiculo.marca }} {{ veiculo.modelo }} ({{ veiculo.get_tipo_display }}) - {{ veiculo.unidades_disponiveis }} unid. disponíveis</option>
+                                    <option value="{{ veiculo.id }}">{{ veiculo.marca }} {{ veiculo.modelo }}
+                                        ({{ veiculo.get_tipo_display }}) - {{ veiculo.unidades_disponiveis }} unid.
+                                        disponíveis
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -43,7 +47,8 @@
                             <label for="cliente" class="form-label">Cliente *</label>
                             <select name="cliente" id="cliente" class="form-select" required>
                                 {% for cliente in clientes %}
-                                    <option value="{{ cliente.id }}">{{ cliente.nome }} (CNH: {{ cliente.cnh }})</option>
+                                    <option value="{{ cliente.id }}">{{ cliente.nome }} (CNH: {{ cliente.cnh }})
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -139,7 +144,7 @@
                 return;
             }
 
-            fetch(`/veiculos/${veiculoId}/frota-disponivel/`)
+            fetch(`/api/veiculos/${veiculoId}/frota-disponivel/`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {
@@ -149,7 +154,6 @@
                         });
                         frotaSelect.innerHTML = options;
 
-                        // Atualiza o km_inicial quando a primeira opção é selecionada
                         if (data.length > 0) {
                             kmInicialInput.value = data[0].km_atual;
                         }
@@ -163,10 +167,10 @@
                 });
         }
 
-        document.getElementById('unidade_frota').addEventListener('change', function() {
+        document.getElementById('unidade_frota').addEventListener('change', function () {
             const frotaId = this.value;
             if (frotaId) {
-                fetch(`/frota/${frotaId}/km/`)
+                fetch(`/api/frota/${frotaId}/km/`)
                     .then(response => response.json())
                     .then(data => {
                         document.getElementById('km_inicial').value = data.km_atual;

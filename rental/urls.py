@@ -1,10 +1,14 @@
 from django.urls import path
-from . import views
+from rental.views.core.views import home
+from rental.views.alocacoes.views import criar_alocacao
+from rental.views.alocacoes.api import frota_disponivel_por_veiculo, km_frota
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('alocar/', views.criar_alocacao, name='alocar_veiculo'),
-    path('veiculos/<int:veiculo_id>/frota-disponivel/', views.frota_disponivel_por_veiculo,
+    path('', home, name='home'),
+    path('alocar/', criar_alocacao, name='alocar_veiculo'),
+
+    # APIs
+    path('api/veiculos/<int:veiculo_id>/frota-disponivel/', frota_disponivel_por_veiculo,
          name='frota_disponivel_por_veiculo'),
-    path('frota/<int:frota_id>/km/', views.km_frota, name='km_frota'),
+    path('api/frota/<int:frota_id>/km/', km_frota, name='km_frota'),
 ]
