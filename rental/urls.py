@@ -1,4 +1,7 @@
 from django.urls import path
+
+from rental.views.clientes.views import listar_clientes, criar_cliente, detalhar_cliente, editar_cliente, \
+    deletar_cliente
 from rental.views.core.views import home
 from rental.views.alocacoes.views import criar_alocacao, listar_alocacoes, detalhar_alocacao
 from rental.views.alocacoes.api import frota_disponivel_por_veiculo, km_frota
@@ -27,5 +30,10 @@ urlpatterns = [
     path('marcas/new/', criar_marca, name='criar_marca'),
     path('marcas/<int:marca_id>/', detalhar_marca, name='detalhar_marca'),
     path('marcas/<int:marca_id>/edit/', editar_marca, name='editar_marca'),
-    path('marcas/<int:marca_id>/delete/', deletar_marca, name='deletar_marca')
+    path('marcas/<int:marca_id>/delete/', deletar_marca, name='deletar_marca'),
+    path('clientes/', listar_clientes, name='listar_clientes'),
+    path('clientes/new/', criar_cliente, name='criar_cliente'),
+    path('clientes/<int:cliente_id>/', detalhar_cliente, name='detalhar_cliente'),
+    path('clientes/<int:cliente_id>/edit/', editar_cliente, name='editar_cliente'),
+    path('clientes/<int:cliente_id>/delete/', deletar_cliente, name='deletar_cliente'),
 ]

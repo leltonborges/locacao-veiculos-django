@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>{{ titulo }}</h1>
+            <div>
+                <a href="{% url 'listar_clientes' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </a>
+                <a href="{% url 'editar_cliente' cliente.id %}" class="btn btn-warning ms-2">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Informações Pessoais</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4">Nome:</dt>
+                            <dd class="col-sm-8">{{ cliente.nome }}</dd>
+
+                            <dt class="col-sm-4">CNH:</dt>
+                            <dd class="col-sm-8">{{ cliente.cnh }}</dd>
+
+                            <dt class="col-sm-4">Validade CNH:</dt>
+                            <dd class="col-sm-8">{{ cliente.validade_cnh|date:"d/m/Y" }}</dd>
+
+                            <dt class="col-sm-4">Status CNH:</dt>
+                            <dd class="col-sm-8">
+                                {% if cnh_valida %}
+                                    <span class="badge bg-success">Válida</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Vencida</span>
+                                {% endif %}
+                            </dd>
+
+                            <dt class="col-sm-4">Telefone:</dt>
+                            <dd class="col-sm-8">{{ cliente.telefone }}</dd>
+
+                            <dt class="col-sm-4">E-mail:</dt>
+                            <dd class="col-sm-8">{{ cliente.email }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Histórico de Alocações ({{ cliente.alocacoes.count }})</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if cliente.alocacoes.all %}
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th>Veículo</th>
+                                        <th>Data</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for alocacao in cliente.alocacoes.all|slice:":5" %}
+                                        <tr>
+                                            <td>{{ alocacao.unidade_frota.veiculo }}</td>
+                                            <td>{{ alocacao.data_alocacao|date:"d/m/Y" }}</td>
+                                            <td>
+                                                {% if alocacao.em_uso %}
+                                                    <span class="badge bg-warning">Em uso</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">Devolvido</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-primary mt-2">Ver todas</a>
+                        {% else %}
+                            <p class="text-muted">Nenhuma alocação registrada</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
