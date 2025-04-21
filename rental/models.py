@@ -71,6 +71,15 @@ class Veiculo(models.Model):
         return f"{self.marca} {self.modelo}"
 
 
+    @classmethod
+    def com_frota_disponivel(cls):
+        return cls.objects.annotate(
+            unidades_disponiveis=Count(
+                'unidades_frota',
+                filter=Q(unidades_frota__disponivel=True)
+            ).filter(unidades_disponiveis__gt=0))
+
+
 class Cliente(models.Model):
     nome = models.CharField(max_length=100, verbose_name="Nome Completo")
     cnh = models.CharField(max_length=20, unique=True, verbose_name="Número da CNH")

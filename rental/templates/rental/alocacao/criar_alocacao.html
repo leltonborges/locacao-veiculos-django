@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">Alocar Veículo</h1>
+
+        {% if error_message %}
+            <div class="alert alert-danger">{{ error_message }}</div>
+        {% endif %}
+
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+
+            <div class="card mb-4">
+                <div class="card-header">Seleção de Veículo</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="veiculo" class="form-label">Veículo *</label>
+                            <select name="veiculo" id="veiculo" class="form-select" required onchange="updateFrotaOptions()">
+                                <option value="">Selecione um veículo</option>
+                                {% for veiculo in veiculos %}
+                                    <option value="{{ veiculo.id }}">{{ veiculo.marca }} {{ veiculo.modelo }} ({{ veiculo.get_tipo_display }}) - {{ veiculo.unidades_disponiveis }} unid. disponíveis</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="unidade_frota" class="form-label">Unidade da Frota *</label>
+                            <select name="unidade_frota" id="unidade_frota" class="form-select" required>
+                                <option value="">Selecione um veículo primeiro</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">Informações do Cliente e Setor</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cliente" class="form-label">Cliente *</label>
+                            <select name="cliente" id="cliente" class="form-select" required>
+                                {% for cliente in clientes %}
+                                    <option value="{{ cliente.id }}">{{ cliente.nome }} (CNH: {{ cliente.cnh }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="setor" class="form-label">Setor *</label>
+                            <select name="setor" id="setor" class="form-select" required>
+                                {% for setor in setores %}
+                                    <option value="{{ setor.id }}">{{ setor.nome }} ({{ setor.sigla }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="motivo" class="form-label">Motivo *</label>
+                        <input type="text" name="motivo" id="motivo" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Alocação -->
+            <div class="card mb-4">
+                <div class="card-header">Dados da Alocação</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="data_alocacao" class="form-label">Data de Alocação *</label>
+                            <input type="date" name="data_alocacao" id="data_alocacao"
+                                   class="form-control" value="{{ data_atual }}" required>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="hora_alocacao" class="form-label">Hora de Alocação *</label>
+                            <input type="time" name="hora_alocacao" id="hora_alocacao"
+                                   class="form-control" value="{{ hora_atual }}" required>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="km_inicial" class="form-label">Quilometragem Inicial</label>
+                            <input type="number" name="km_inicial" id="km_inicial"
+                                   class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">Dados de Devolução (Opcional)</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="data_devolucao" class="form-label">Data de Devolução</label>
+                            <input type="date" name="data_devolucao" id="data_devolucao" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="hora_devolucao" class="form-label">Hora de Devolução</label>
+                            <input type="time" name="hora_devolucao" id="hora_devolucao" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="km_final" class="form-label">Quilometragem Final</label>
+                            <input type="number" name="km_final" id="km_final" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="observacoes" class="form-label">Observações</label>
+                        <textarea name="observacoes" id="observacoes" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">Confirmar Alocação</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function updateFrotaOptions() {
+            const veiculoId = document.getElementById('veiculo').value;
+            const frotaSelect = document.getElementById('unidade_frota');
+            const kmInicialInput = document.getElementById('km_inicial');
+
+            frotaSelect.innerHTML = '<option value="">Carregando...</option>';
+            kmInicialInput.value = '';
+
+            if (!veiculoId) {
+                frotaSelect.innerHTML = '<option value="">Selecione um veículo primeiro</option>';
+                return;
+            }
+
+            fetch(`/veiculos/${veiculoId}/frota-disponivel/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        let options = '';
+                        data.forEach(frota => {
+                            options += `<option value="${frota.id}">${frota.placa} (Km: ${frota.km_atual})</option>`;
+                        });
+                        frotaSelect.innerHTML = options;
+
+                        // Atualiza o km_inicial quando a primeira opção é selecionada
+                        if (data.length > 0) {
+                            kmInicialInput.value = data[0].km_atual;
+                        }
+                    } else {
+                        frotaSelect.innerHTML = '<option value="">Nenhuma unidade disponível para este veículo</option>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar frotas:', error);
+                    frotaSelect.innerHTML = '<option value="">Erro ao carregar frotas</option>';
+                });
+        }
+
+        document.getElementById('unidade_frota').addEventListener('change', function() {
+            const frotaId = this.value;
+            if (frotaId) {
+                fetch(`/frota/${frotaId}/km/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('km_inicial').value = data.km_atual;
+                    });
+            }
+        });
+    </script>
+{% endblock %}
