@@ -7,6 +7,7 @@ from rental.views.alocacoes.views import criar_alocacao, listar_alocacoes, detal
 from rental.views.alocacoes.api import frota_disponivel_por_veiculo, km_frota
 from rental.views.frota.views import listar_frota, criar_frota, detalhar_frota, editar_frota, deletar_frota
 from rental.views.marcas.views import listar_marcas, criar_marca, detalhar_marca, editar_marca, deletar_marca
+from rental.views.setores.views import listar_setores, criar_setor, detalhar_setor, editar_setor, deletar_setor
 from rental.views.veiculos.views import listar_veiculos, criar_veiculo, editar_veiculo, detalhar_veiculo
 
 urlpatterns = [
@@ -36,4 +37,9 @@ urlpatterns = [
     path('clientes/<int:cliente_id>/', detalhar_cliente, name='detalhar_cliente'),
     path('clientes/<int:cliente_id>/edit/', editar_cliente, name='editar_cliente'),
     path('clientes/<int:cliente_id>/delete/', deletar_cliente, name='deletar_cliente'),
+    path('setores/', listar_setores, name='listar_setores'),
+    path('setores/new/', criar_setor, name='criar_setor'),
+    path('setores/<int:setor_id>/', detalhar_setor, name='detalhar_setor'),
+    path('setores/<int:setor_id>/edit/', editar_setor, name='editar_setor'),
+    path('setores/<int:setor_id>/delete/', deletar_setor, name='deletar_setor'),
 ]
