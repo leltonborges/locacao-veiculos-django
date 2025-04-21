@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>{{ titulo }}</h1>
+            <div>
+                <a href="{% url 'listar_alocacoes' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </a>
+                {% if mostrar_botao_devolver %}
+                    <a href="#" class="btn btn-warning ms-2">
+                        <i class="fas fa-car-side"></i> Registrar Devolução
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Informações da Alocação</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4">Status:</dt>
+                            <dd class="col-sm-8">
+                                {% if alocacao.em_uso %}
+                                    <span class="badge bg-success">Em uso</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Devolvido</span>
+                                {% endif %}
+                            </dd>
+
+                            <dt class="col-sm-4">Veículo:</dt>
+                            <dd class="col-sm-8">{{ alocacao.unidade_frota }}</dd>
+
+                            <dt class="col-sm-4">Placa:</dt>
+                            <dd class="col-sm-8">{{ alocacao.unidade_frota.placa }}</dd>
+
+                            <dt class="col-sm-4">Cliente:</dt>
+                            <dd class="col-sm-8">{{ alocacao.cliente.nome }} (CNH: {{ alocacao.cliente.cnh }})</dd>
+
+                            <dt class="col-sm-4">Setor:</dt>
+                            <dd class="col-sm-8">{{ alocacao.setor.nome }} ({{ alocacao.setor.sigla }})</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Datas e Quilometragem</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4">Data/Hora Alocação:</dt>
+                            <dd class="col-sm-8">{{ alocacao.data_alocacao|date:"d/m/Y H:i" }}</dd>
+
+                            {% if alocacao.data_devolucao %}
+                                <dt class="col-sm-4">Data/Hora Devolução:</dt>
+                                <dd class="col-sm-8">{{ alocacao.data_devolucao|date:"d/m/Y H:i" }}</dd>
+                            {% endif %}
+
+                            <dt class="col-sm-4">KM Inicial:</dt>
+                            <dd class="col-sm-8">{{ alocacao.km_inicial }}</dd>
+
+                            {% if alocacao.km_final %}
+                                <dt class="col-sm-4">KM Final:</dt>
+                                <dd class="col-sm-8">{{ alocacao.km_final }}</dd>
+
+                                <dt class="col-sm-4">KM Percorridos:</dt>
+                                <dd class="col-sm-8">{{ alocacao.km_percorridos }}</dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Detalhes Adicionais</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h6>Motivo da Alocação:</h6>
+                    <p>{{ alocacao.motivo }}</p>
+                </div>
+
+                {% if alocacao.observacoes %}
+                    <div class="mb-3">
+                        <h6>Observações:</h6>
+                        <p>{{ alocacao.observacoes }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

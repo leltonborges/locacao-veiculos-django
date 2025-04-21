@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>{{ titulo }}</h1>
+            <a href="{% url 'criar_veiculo' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Novo Veículo
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Marca</th>
+                        <th>Tipo</th>
+                        <th>Ano</th>
+                        <th>Unidades</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for veiculo in veiculos %}
+                        <tr>
+                            <td>{{ veiculo.modelo }}</td>
+                            <td>{{ veiculo.marca }}</td>
+                            <td>{{ veiculo.get_tipo_display }}</td>
+                            <td>{{ veiculo.ano_fabricacao }}</td>
+                            <td>{{ veiculo.unidades_frota.count }}</td>
+                            <td>
+                                <a href="{% url 'detalhar_veiculo' veiculo.id %}" class="btn btn-sm btn-info"
+                                   title="Detalhes">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'editar_veiculo' veiculo.id %}" class="btn btn-sm btn-warning"
+                                   title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">Nenhum veículo cadastrado</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

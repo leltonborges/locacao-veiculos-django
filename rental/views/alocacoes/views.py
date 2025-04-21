@@ -1,8 +1,28 @@
 from django.core.exceptions import ValidationError
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
 from rental.models import Alocacao, Frota, Cliente, Setor, Veiculo
+
+
+def listar_alocacoes(request):
+    alocacoes = Alocacao.objects.all().order_by('-data_alocacao')
+    return render(request, 'rental/alocacao/listar_alocacoes.html', {
+        'alocacoes': alocacoes,
+        'titulo': 'Lista de Alocações'
+    })
+
+
+def detalhar_alocacao(request, alocacao_id):
+    alocacao = get_object_or_404(Alocacao, pk=alocacao_id)
+
+    context = {
+        'alocacao': alocacao,
+        'titulo': f'Alocação #{alocacao.id}',
+        'mostrar_botao_devolver': alocacao.em_uso
+    }
+
+    return render(request, 'rental/alocacao/detalhar_alocacao.html', context)
 
 
 def criar_alocacao(request):

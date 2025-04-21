@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>{{ titulo }}</h1>
+            <div>
+                <a href="{% url 'listar_veiculos' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </a>
+                <a href="{% url 'editar_veiculo' veiculo.id %}" class="btn btn-warning ms-2">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Informações Básicas</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4">Modelo:</dt>
+                            <dd class="col-sm-8">{{ veiculo.modelo }}</dd>
+
+                            <dt class="col-sm-4">Marca:</dt>
+                            <dd class="col-sm-8">{{ veiculo.marca.nome }} ({{ veiculo.marca.pais_origem }})</dd>
+
+                            <dt class="col-sm-4">Tipo:</dt>
+                            <dd class="col-sm-8">{{ veiculo.get_tipo_display }}</dd>
+
+                            <dt class="col-sm-4">Ano Fabricação:</dt>
+                            <dd class="col-sm-8">{{ veiculo.ano_fabricacao }}</dd>
+
+                            <dt class="col-sm-4">Idade:</dt>
+                            <dd class="col-sm-8">{{ veiculo.marca.idade }} anos</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Unidades da Frota</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if unidades_frota %}
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th>Placa</th>
+                                        <th>KM Atual</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for unidade in unidades_frota %}
+                                        <tr>
+                                            <td>{{ unidade.placa }}</td>
+                                            <td>{{ unidade.km_atual }}</td>
+                                            <td>
+                                                {% if unidade.disponivel %}
+                                                    <span class="badge bg-success">Disponível</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">Alocado</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">Nenhuma unidade cadastrada para este modelo</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Últimas Alocações</h5>
+            </div>
+            <div class="card-body">
+                {% if veiculo.unidades_frota.first.alocacoes.exists %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Cliente</th>
+                                <th>Placa</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for unidade in veiculo.unidades_frota.all %}
+                                {% for alocacao in unidade.alocacoes.all|slice:":3" %}
+                                    <tr>
+                                        <td>{{ alocacao.data_alocacao|date:"d/m/Y" }}</td>
+                                        <td>{{ alocacao.cliente.nome }}</td>
+                                        <td>{{ unidade.placa }}</td>
+                                        <td>
+                                            {% if alocacao.em_uso %}
+                                                <span class="badge bg-warning">Em uso</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Devolvido</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">Nenhuma alocação registrada para este veículo</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
