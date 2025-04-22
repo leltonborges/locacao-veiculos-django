@@ -108,3 +108,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://leltoncrazy.com',
+    'https://traefik.me'
+]
