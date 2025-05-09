@@ -42,7 +42,8 @@
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 {% if alocacao.em_uso %}
-                                    <a href="#" class="btn btn-sm btn-warning" title="Devolver">
+                                    <a href="{% url 'registrar_devolucao' alocacao.id %}" class="btn btn-sm btn-warning"
+                                       title="Devolver">
                                         <i class="fas fa-car-side"></i>
                                     </a>
                                 {% endif %}

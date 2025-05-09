@@ -1,10 +1,10 @@
 from django.urls import path
 
+from rental.views.alocacoes.api import frota_disponivel_por_veiculo, km_frota
+from rental.views.alocacoes.views import criar_alocacao, listar_alocacoes, detalhar_alocacao, registrar_devolucao
 from rental.views.clientes.views import listar_clientes, criar_cliente, detalhar_cliente, editar_cliente, \
     deletar_cliente
 from rental.views.core.views import home
-from rental.views.alocacoes.views import criar_alocacao, listar_alocacoes, detalhar_alocacao
-from rental.views.alocacoes.api import frota_disponivel_por_veiculo, km_frota
 from rental.views.frota.views import listar_frota, criar_frota, detalhar_frota, editar_frota, deletar_frota
 from rental.views.marcas.views import listar_marcas, criar_marca, detalhar_marca, editar_marca, deletar_marca
 from rental.views.setores.views import listar_setores, criar_setor, detalhar_setor, editar_setor, deletar_setor
@@ -15,6 +15,7 @@ urlpatterns = [
     path('alocar/', listar_alocacoes, name='listar_alocacoes'),
     path('alocar/new/', criar_alocacao, name='criar_alocacao'),
     path('alocar/<int:alocacao_id>/', detalhar_alocacao, name='detalhar_alocacao'),
+    path('alocacoes/<int:alocacao_id>/devolver/', registrar_devolucao, name='registrar_devolucao'),
     path('api/veiculos/<int:veiculo_id>/frota-disponivel/', frota_disponivel_por_veiculo,
          name='frota_disponivel_por_veiculo'),
     path('api/frota/<int:frota_id>/km/', km_frota, name='km_frota'),

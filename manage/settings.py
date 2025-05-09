@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure--=pz8kaav4#tft#77459(kkb2x)5eqt3@$q1g-z5%&qvg!c3mr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.leltoncrazy.com', '.traefik.me']
+ALLOWED_HOSTS = ['.leltoncrazy.com', '.traefik.me', 'localhost']
 
 # Application definition
 
@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap5',
+    'rest_framework',
     'rental.apps.RentalConfig',
 ]
 
@@ -109,7 +110,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
+
 CSRF_TRUSTED_ORIGINS = [
-    'https://leltoncrazy.com',
-    'https://traefik.me'
+    'https://*.leltoncrazy.com',
+    'https://*.traefik.me'
 ]

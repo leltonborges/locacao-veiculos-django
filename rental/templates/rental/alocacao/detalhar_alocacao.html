@@ -9,7 +9,7 @@
                     <i class="fas fa-arrow-left"></i> Voltar
                 </a>
                 {% if mostrar_botao_devolver %}
-                    <a href="#" class="btn btn-warning ms-2">
+                    <a href="{% url 'registrar_devolucao' alocacao.id %}" class="btn btn-warning ms-2">
                         <i class="fas fa-car-side"></i> Registrar Devolução
                     </a>
                 {% endif %}
