@@ -27,6 +27,9 @@ RUN mkdir -p /app/static /app/staticfiles /app/rental/static
 
 COPY . .
 
+# Install setuptools before collectstatic
+RUN pip install setuptools
+
 RUN python manage.py collectstatic --noinput
 
 # Adicionar script de entrypoint

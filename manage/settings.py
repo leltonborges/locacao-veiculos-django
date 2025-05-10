@@ -133,17 +133,24 @@ CSRF_TRUSTED_ORIGINS = [
 
 # CORS local
 # CORS_ALLOWED_ORIGINS = [
-#     'http://localhost',
-#     'http://127.0.0.1'
+# 'http://localhost',
+# 'http://127.0.0.1',
+# 'http://localhost:8000'
 # ]
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
     'https://*.leltoncrazy.com',
+    'http://*.leltoncrazy.com',
     'https://*.traefik.me',
-    'http://localhost',
-    'http://127.0.0.1'
+    'http://*.traefik.me',
 ]
+
+# Add CORS_ALLOW_ALL_ORIGINS for development
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -201,4 +208,7 @@ SWAGGER_SETTINGS = {
         'drf_yasg.inspectors.DjangoRestResponsePagination',
         'drf_yasg.inspectors.CoreAPICompatInspector',
     ],
+    'SCHEMES': ['http', 'https'],
 }
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
