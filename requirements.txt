@@ -1,8 +1,9 @@
 crispy-bootstrap5==2025.4
 Django==5.2
-gunicorn==21.2.0
+gunicorn==23.0.0
 psycopg2-binary==2.9.9
 whitenoise==6.3.0
 django-crispy-forms==2.4
-djangorestframework==3.14.0
+djangorestframework==3.16.0
 drf-yasg==1.21.7
+django-cors-headers==4.3.1
