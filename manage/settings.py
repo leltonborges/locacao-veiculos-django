@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure--=pz8kaav4#tft#77459(kkb2x)5eqt3@$q1g-z5%&qvg!c3mr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.leltoncrazy.com', '.traefik.me', 'localhost']
+ALLOWED_HOSTS = ['.leltoncrazy.com', '.traefik.me']
 
 # Application definition
 
@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'rest_framework',
+    'drf_yasg',
     'rental.apps.RentalConfig',
 ]
 
