@@ -7,7 +7,20 @@ from rental.models import Alocacao, Frota, Cliente, Setor, Veiculo
 
 
 def listar_alocacoes(request):
-    alocacoes = Alocacao.objects.all().order_by('-data_alocacao')
+    alocacoes = Alocacao.objects.select_related(
+        'unidade_frota',
+        'unidade_frota__veiculo',
+        'cliente',
+        'setor'
+    ).order_by('-data_alocacao')
+
+    for alocacao in alocacoes:
+        if alocacao.km_final:
+            alocacao.km_rodados = alocacao.km_final - alocacao.km_inicial
+            if alocacao.km_estimado:
+                alocacao.diferenca_km = alocacao.km_rodados - alocacao.km_estimado
+                alocacao.percentual_diferenca = (alocacao.diferenca_km / alocacao.km_estimado) * 100 if alocacao.km_estimado else 0
+
     return render(request, 'rental/alocacao/listar_alocacoes.html', {
         'alocacoes': alocacoes,
         'titulo': 'Lista de Alocações'
@@ -50,10 +63,12 @@ def criar_alocacao(request):
                 data_devolucao=data_devolucao,
                 motivo=request.POST['motivo'],
                 km_inicial=unidade_frota.km_atual,
-                km_final=request.POST.get('km_final'),
+                km_estimado=request.POST.get('km_estimado'),
+                km_final=None,  # Will be set during return
                 observacoes=request.POST.get('observacoes', '')
             )
             alocacao.save()
+            messages.success(request, 'Alocação criada com sucesso!')
             return redirect('listar_alocacoes')
 
         except Exception as e:
@@ -87,15 +102,23 @@ def registrar_devolucao(request, alocacao_id):
             data_devolucao_str = f"{request.POST['data_devolucao']} {request.POST['hora_devolucao']}"
             data_devolucao = timezone.datetime.strptime(data_devolucao_str, '%Y-%m-%d %H:%M')
 
-            km_final = int(request.POST['km_final'])
+            km_rodados = int(request.POST['km_final'])  # agora é o delta
+            if km_rodados < 0:
+                raise ValidationError("Quilômetros rodados não pode ser negativo")
 
-            if km_final < alocacao.km_inicial:
-                raise ValidationError("Quilometragem final não pode ser menor que a inicial")
+            km_final = alocacao.km_inicial + km_rodados
+
+            if alocacao.km_estimado and km_rodados > alocacao.km_estimado * 1.2:  # 20% tolerance
+                messages.warning(request, 'Atenção: Os quilômetros rodados excedem em mais de 20% a estimativa inicial!')
 
             alocacao.data_devolucao = data_devolucao
             alocacao.km_final = km_final
             alocacao.observacoes = request.POST.get('observacoes', '')
             alocacao.save()
+
+            # Atualiza o km_atual da frota
+            alocacao.unidade_frota.km_atual = km_final
+            alocacao.unidade_frota.save()
 
             messages.success(request, 'Devolução registrada com sucesso!')
             return redirect('detalhar_alocacao', alocacao_id=alocacao.id)

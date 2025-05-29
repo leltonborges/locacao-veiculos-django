@@ -26,6 +26,11 @@
 
                     <dt class="col-sm-3">KM Inicial:</dt>
                     <dd class="col-sm-9">{{ alocacao.km_inicial }}</dd>
+
+                    {% if alocacao.km_estimado %}
+                    <dt class="col-sm-3">KM Estimado:</dt>
+                    <dd class="col-sm-9">{{ alocacao.km_estimado }}</dd>
+                    {% endif %}
                 </dl>
             </div>
         </div>
@@ -52,9 +57,9 @@
                         </div>
 
                         <div class="col-md-4 mb-3">
-                            <label for="km_final" class="form-label">Quilometragem Final *</label>
+                            <label for="km_final" class="form-label">Quilômetros Rodados *</label>
                             <input type="number" name="km_final" id="km_final"
-                                   class="form-control" min="{{ alocacao.km_inicial }}" required>
+                                   class="form-control" placeholder="Informe apenas o quanto rodou" required>
                         </div>
                     </div>
 

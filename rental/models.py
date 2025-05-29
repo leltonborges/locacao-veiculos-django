@@ -191,11 +191,17 @@ class Alocacao(models.Model):
         verbose_name="Quilometragem Inicial",
         help_text="Quilometragem no momento da alocação"
     )
+    km_estimado = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        verbose_name="Quilômetros a Rodar",
+        help_text="Estimativa de quilômetros a serem rodados"
+    )
     km_final = models.PositiveIntegerField(
         null=True,
         blank=True,
-        verbose_name="Quilometragem Final",
-        help_text="Quilometragem no momento da devolução"
+        verbose_name="Quilômetros Rodados",
+        help_text="Quilômetros efetivamente rodados"
     )
     motivo = models.TextField(
         verbose_name="Motivo da Alocação",
