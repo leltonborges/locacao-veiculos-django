@@ -9,7 +9,7 @@ def listar_veiculos(request):
     veiculos = Veiculo.objects.select_related('marca').all()
     return render(request, 'rental/veiculos/listar_veiculos.html', {
         'veiculos': veiculos,
-        'titulo': 'Lista de Veículos'
+        'titulo': 'Modelos de Veículos'
     })
 
 
@@ -25,7 +25,7 @@ def criar_veiculo(request):
 
     return render(request, 'rental/veiculos/veiculo_form.html', {
         'form': form,
-        'titulo': 'Cadastrar Novo Veículo'
+        'titulo': 'Cadastrar Novo Modelo de Veículo'
     })
 
 
@@ -40,7 +40,7 @@ def detalhar_veiculo(request, veiculo_id):
     return render(request, 'rental/veiculos/detalhar_veiculo.html', {
         'veiculo': veiculo,
         'unidades_frota': unidades_frota,
-        'titulo': f'Detalhes do Veículo: {veiculo}'
+        'titulo': f'Detalhes do Modelo de Veiculo: {veiculo}'
     })
 
 
