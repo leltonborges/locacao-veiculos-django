@@ -1,7 +1,8 @@
 # Sistema de Gestão de Locação de Veículos
 ## Integrantes
-- Lelton Borger (27933091)
-- Suelen Marinho 
+
+- **[Suelen Barbosa Marinho](https://github.com/suelenmarinho)**
+- **[Lelton Pereira Borges](https://github.com/leltonborges)** (27933091)
 
 ## Sobre o Projeto
 
