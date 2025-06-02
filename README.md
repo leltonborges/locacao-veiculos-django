@@ -4,13 +4,22 @@
 - **[Suelen Barbosa Marinho](https://github.com/suelenmarinho)** (31923160)
 - **[Lelton Pereira Borges](https://github.com/leltonborges)** (27933091)
 
-## Sobre o Projeto
+# Sobre o Projeto
 
-### Qual problema do mundo real nos inspirou?
+## Responsabilidade
+- Suelen, elaborou a modelagem do sistema e o design da solução
+- Lelton, codificou a solução e definiu as regras de locação.
+
+## Disponibilização
+O Sistema pode ser acessado [Aqui](https://locacao.leltoncrazy.com/) ou o link direto https://locacao.leltoncrazy.com/
+
+Este domínio estará funcionando até 12 de junho de 2025, não é possível acessa-lo usando a rede da UDF.
+
+## Qual problema do mundo real nos inspirou?
 
 A gestão de frotas e locação de veículos é um desafio recorrente em empresas, órgãos públicos e locadoras. Muitas vezes, o controle é feito de forma manual, em planilhas, o que gera retrabalho, erros, falta de rastreabilidade e até prejuízos financeiros por mau uso ou falta de manutenção dos veículos. Queríamos criar uma solução que tornasse esse processo mais seguro, transparente e eficiente.
 
-### Quais são os objetivos do sistema?
+## Quais são os objetivos do sistema?
 
 Nosso objetivo é oferecer uma plataforma web intuitiva para:
 - Cadastrar e gerenciar veículos, clientes, setores e marcas
@@ -21,14 +30,14 @@ Nosso objetivo é oferecer uma plataforma web intuitiva para:
 
 Acreditamos que, ao digitalizar e automatizar essas rotinas, ajudamos empresas a economizar tempo, reduzir custos e aumentar a segurança operacional.
 
-### O que aprendemos com este projeto? Quais foram os maiores desafios?
+## O que aprendemos com este projeto? Quais foram os maiores desafios?
 
 Aprendemos muito sobre regras de negócio reais do setor de frotas, como a importância do controle de quilometragem, da rastreabilidade das alocações e da validação de dados críticos (ex: CNH válida, veículos disponíveis, etc). Os maiores desafios foram:
 - Garantir que todas as regras fossem respeitadas sem prejudicar a experiência do usuário
 - Lidar com integrações entre diferentes entidades (veículo, frota, cliente, setor)
 - Implementar feedbacks claros para o usuário em cada etapa
 
-### Que melhorias podemos fazer no futuro? Onde mais essa ideia pode ser aplicada?
+## Que melhorias podemos fazer no futuro? Onde mais essa ideia pode ser aplicada?
 
 - Adicionar relatórios gerenciais e dashboards
 - Integrar com sistemas de manutenção preventiva
@@ -143,7 +152,7 @@ Dockerfile
 
 ## Regras de Negócio Detalhadas por Tela/Módulo
 
-### Alocação
+## Alocação
 - Só é possível alocar veículos que estejam disponíveis (`disponivel=True` na unidade da frota).
 - Ao criar uma alocação:
   - A quilometragem inicial é registrada automaticamente com base no valor atual da unidade da frota.
@@ -157,7 +166,7 @@ Dockerfile
   - Não é possível devolver uma alocação já devolvida.
 - Não é possível excluir setores, clientes ou marcas que tenham alocações vinculadas.
 
-### Frota
+## Frota
 - Cadastro de unidades de frota exige:
   - Placa única.
   - Quilometragem atual não pode ser negativa.
@@ -165,28 +174,28 @@ Dockerfile
 - Ao devolver um veículo, o KM atual da frota é atualizado automaticamente.
 - É possível excluir uma unidade de frota a qualquer momento (não há bloqueio por alocação).
 
-### Modelos de Veículo
+## Modelos de Veículo
 - Só é possível cadastrar modelos de veículos para marcas ativas.
 - Não é possível excluir uma marca que possua veículos cadastrados.
 - Não é possível excluir um modelo de veículo se houver unidades de frota vinculadas (regra sugerida, mas pode ser implementada se desejar).
 
-### Clientes
+## Clientes
 - Cadastro exige CNH única e válida (data de validade maior ou igual à data atual).
 - Não é possível excluir clientes que tenham alocações registradas.
 - O sistema exibe badge de CNH válida ou vencida na listagem.
 - O cliente pode ser editado a qualquer momento.
 
-### Setores
+## Setores
 - Cadastro exige sigla única.
 - Não é possível excluir setores que tenham alocações registradas.
 - O setor pode ser editado a qualquer momento.
 
-### Marcas
+## Marcas
 - Só marcas ativas aparecem para seleção ao cadastrar modelos de veículos.
 - Não é possível excluir marcas que tenham veículos cadastrados.
 - Marcas podem ser ativadas/desativadas a qualquer momento.
 
-### Regras Gerais e Validações
+## Regras Gerais e Validações
 - Todos os cadastros possuem validação de campos obrigatórios.
 - Não é possível excluir entidades que estejam em uso (relacionadas a outras entidades).
 - O sistema utiliza mensagens de sucesso/erro para feedback ao usuário.
