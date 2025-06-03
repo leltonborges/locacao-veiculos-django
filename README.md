@@ -15,7 +15,7 @@ O Sistema pode ser acessado [Aqui](https://locacao.leltoncrazy.com/) ou o link d
 
 Este domínio estará funcionando até 12 de junho de 2025, não é possível acessa-lo usando a rede da UDF.
 
-[Video Youtube](https://github.com/leltonborges)
+[Video Youtube](https://youtu.be/zKoxXEzzHNI)
 
 ## Qual problema do mundo real nos inspirou?
 
