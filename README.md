@@ -15,6 +15,8 @@ O Sistema pode ser acessado [Aqui](https://locacao.leltoncrazy.com/) ou o link d
 
 Este domínio estará funcionando até 12 de junho de 2025, não é possível acessa-lo usando a rede da UDF.
 
+[Video Youtube](https://github.com/leltonborges)
+
 ## Qual problema do mundo real nos inspirou?
 
 A gestão de frotas e locação de veículos é um desafio recorrente em empresas, órgãos públicos e locadoras. Muitas vezes, o controle é feito de forma manual, em planilhas, o que gera retrabalho, erros, falta de rastreabilidade e até prejuízos financeiros por mau uso ou falta de manutenção dos veículos. Queríamos criar uma solução que tornasse esse processo mais seguro, transparente e eficiente.
